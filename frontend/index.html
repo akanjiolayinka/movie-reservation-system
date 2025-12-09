@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Reservation System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🎬 Movie Reservation System</h1>
+            <div id="userInfo" class="user-info hidden">
+                <span id="userName"></span>
+                <button onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="section">
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required value="admin@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required value="admin123">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div id="loginError" class="error hidden"></div>
+            
+            <div class="test-accounts">
+                <h3>Test Accounts:</h3>
+                <ul>
+                    <li><strong>Admin:</strong> admin@example.com / admin123</li>
+                    <li><strong>User:</strong> john.doe@example.com / password123</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main App Section -->
+        <div id="appSection" class="section hidden">
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('movies')">Movies</button>
+                <button class="tab-btn" onclick="showTab('reservations')">My Reservations</button>
+                <button class="tab-btn admin-only hidden" onclick="showTab('admin')">Admin Panel</button>
+            </div>
+
+            <!-- Movies Tab -->
+            <div id="moviesTab" class="tab-content active">
+                <h2>Available Movies</h2>
+                <div id="moviesList" class="movies-grid"></div>
+            </div>
+
+            <!-- Showtimes Tab -->
+            <div id="showtimesTab" class="tab-content hidden">
+                <button onclick="showTab('movies')" class="btn btn-secondary">← Back to Movies</button>
+                <h2 id="movieTitle"></h2>
+                <div id="showtimesList" class="showtimes-list"></div>
+            </div>
+
+            <!-- Seat Selection Tab -->
+            <div id="seatsTab" class="tab-content hidden">
+                <button onclick="showTab('showtimes')" class="btn btn-secondary">← Back to Showtimes</button>
+                <h2>Select Your Seats</h2>
+                <div id="showtimeInfo" class="showtime-info"></div>
+                <div id="seatsGrid" class="seats-grid"></div>
+                <div class="seat-legend">
+                    <div><span class="seat available"></span> Available</div>
+                    <div><span class="seat reserved"></span> Reserved</div>
+                    <div><span class="seat selected"></span> Selected</div>
+                    <div><span class="seat vip"></span> VIP</div>
+                </div>
+                <div class="booking-summary">
+                    <h3>Selected Seats: <span id="selectedSeatsCount">0</span></h3>
+                    <p>Total: $<span id="totalPrice">0.00</span></p>
+                    <button id="bookBtn" onclick="createReservation()" class="btn btn-primary" disabled>Book Seats</button>
+                </div>
+            </div>
+
+            <!-- Reservations Tab -->
+            <div id="reservationsTab" class="tab-content">
+                <h2>My Reservations</h2>
+                <div id="reservationsList"></div>
+            </div>
+
+            <!-- Admin Tab -->
+            <div id="adminTab" class="tab-content admin-only hidden">
+                <h2>Admin Dashboard</h2>
+                
+                <div class="admin-section">
+                    <h3>Theater Capacity Report</h3>
+                    <div id="capacityReport"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Revenue Report</h3>
+                    <div id="revenueReport"></div>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Add New Movie</h3>
+                    <form id="addMovieForm" onsubmit="addMovie(event)">
+                        <div class="form-group">
+                            <label>Title:</label>
+                            <input type="text" id="movieTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description:</label>
+                            <textarea id="movieDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Genre:</label>
+                            <input type="text" id="movieGenre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration (minutes):</label>
+                            <input type="number" id="movieDuration" required min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Release Date:</label>
+                            <input type="date" id="movieReleaseDate">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Movie</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="spinner hidden">
+            <div class="spinner-circle"></div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
